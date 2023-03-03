@@ -2,11 +2,11 @@
   <br>
   <a href="https://christian-schou.dk"><img src="https://github.com/Tech-With-Christian/Dotnet-Demo-CRUD-Api/blob/main/assets/img/cs-logo-polygon.png" alt="Christian Schou Logo" width="200"></a>
   <br>
-  .NET Demo CRUD API
+  .NET CRUD API
   <br>
 </h1>
 
-<h4 align="center">This is a simple Demo CRUD API for use in my <a href="https://blog.christian-schou.dk" target="_blank">tutorials</a>. It contains a simple implementation of a CRUD service for products, that can easily be extended.</h4>
+<h4 align="center">This is a simple CRUD API for use in my <a href="https://blog.christian-schou.dk" target="_blank">tutorials</a>. It contains a simple implementation of a CRUD service for products, that can easily be extended.</h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -28,6 +28,8 @@
 * Automatic mapping
   - Automatic Mapping of DTOs to/from Domain Models using <a href="https://automapper.org/">AutoMapper</a>.
 * Database Integration using Entity Framework Core.
+* MediatR (CQRS)
+  - Implementation of CQRS using MediatR. All controllers will consume the mediator to handle commands and queries.
 
 ## How To Use
 
