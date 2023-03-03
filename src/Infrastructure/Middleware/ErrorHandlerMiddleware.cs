@@ -6,18 +6,17 @@ using System.Text.Json;
 
 namespace Infrastructure.Middleware
 {
+    /// <summary>
+    /// Custom Error Handler Middlware for requests.<br />
+    /// If an exception is thrown, this middleware will catch it and return a custom response based on the status code defined in the switch statement.<br />
+    /// If the exception is not handled, it will be logged and a 500 status code will be returned.<br />
+    /// This error handler will automatically log the error message provided in the exception message to the console. No need to do that in the service.
+    /// </summary>
     internal class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        /// <summary>
-        /// Custom Error Handler Middlware for requests. If an exception is thrown, this middleware will catch it and return a custom response
-        /// based on the status code defined in the switch statement. If the exception is not handled, it will be logged and a 500 status code will be returned.
-        /// This error handler will automatically log the error message provided in the exception message to the console.
-        /// </summary>
-        /// <param name="next"></param>
-        /// <param name="logger"></param>
         public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
         {
             _next = next;
