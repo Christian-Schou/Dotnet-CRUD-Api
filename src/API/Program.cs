@@ -1,4 +1,5 @@
 using API.Configurations;
+using Infrastructure;
 using Infrastructure.Common;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -19,7 +20,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     // Ignore omitted parameters on models to enable optional params (e.g. User update)
     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
-
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -31,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseInfrastructure(builder.Configuration);
 
 app.UseHttpsRedirection();
 
