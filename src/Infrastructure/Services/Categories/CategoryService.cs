@@ -8,12 +8,17 @@ namespace Infrastructure.Services.Categories
 {
     internal class CategoryService : ICategoryService
     {
+        #region Constructor
         private readonly ApplicationDbContext _db;
 
         public CategoryService(ApplicationDbContext db)
         {
             _db = db;
         }
+
+        #endregion Constructor
+
+        #region Create (C)
 
         /// <summary>
         /// This method will start by checking if the category has already been created in the database.<br />
@@ -35,17 +40,9 @@ namespace Infrastructure.Services.Categories
             return category;
         }
 
-        /// <summary>
-        ///  This method will request the helper method to make sure that the category exists in the database<br />
-        ///  IF the category exists it will be removed and the database will be updated.
-        /// </summary>
-        /// <param name="id">ID of the category to delete</param>
-        public async Task DeleteCategoryAsync(Guid id)
-        {
-            Category category = await getCategoryByIdAsync(id);
-            _db.Categories.Remove(category);
-            await _db.SaveChangesAsync();
-        }
+        #endregion Create (C)
+
+        #region Read (R)
 
         /// <summary>
         /// Async method that enumerates the Categories asynchronously and returns them as an IEnumerable.
@@ -53,7 +50,9 @@ namespace Infrastructure.Services.Categories
         /// <returns>List of categories from database</returns>
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            List<Category> categories = await _db.Categories.ToListAsync();
+            List<Category> categories = await _db.Categories
+                .AsNoTracking()
+                .ToListAsync();
 
             if (categories.Count() == 0)
             {
@@ -83,6 +82,10 @@ namespace Infrastructure.Services.Categories
             return await getCategoryByNameAsync(name);
         }
 
+        #endregion Read (R)
+
+        #region Update (U)
+
         /// <summary>
         /// This method will start by checking if the category exist in the database.<br />
         /// It will then continue to validate the category to update and make sure that no category already exist with the same name
@@ -110,7 +113,25 @@ namespace Infrastructure.Services.Categories
             return categoryToUpdate;
         }
 
-        // Helper methods
+        #endregion Update (U)
+
+        #region Delete (D)
+
+        /// <summary>
+        ///  This method will request the helper method to make sure that the category exists in the database<br />
+        ///  IF the category exists it will be removed and the database will be updated.
+        /// </summary>
+        /// <param name="id">ID of the category to delete</param>
+        public async Task DeleteCategoryAsync(Guid id)
+        {
+            Category category = await getCategoryByIdAsync(id);
+            _db.Categories.Remove(category);
+            await _db.SaveChangesAsync();
+        }
+
+        #endregion Delete (D)
+
+        #region Helpers
 
         /// <summary>
         /// Get a category by the id of the category.
@@ -137,5 +158,8 @@ namespace Infrastructure.Services.Categories
             if (category == null) throw new KeyNotFoundException("The category was not found in the database.");
             return category;
         }
+
+        #endregion Helpers
+
     }
 }
