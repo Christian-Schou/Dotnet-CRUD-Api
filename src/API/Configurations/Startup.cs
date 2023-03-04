@@ -11,8 +11,6 @@
 
                 config.AddJsonFile($"{configurationsDirectory}/appsettings.json", optional: false, reloadOnChange: true)
                         .AddJsonFile($"{configurationsDirectory}/appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile($"{configurationsDirectory}/database.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"{configurationsDirectory}/database.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                         .AddEnvironmentVariables();
             });
             return api;

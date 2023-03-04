@@ -2,6 +2,7 @@
 using Domain.Entitites.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Data.Database
 {
@@ -17,6 +18,7 @@ namespace Data.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            Log.Information("Using In Memory Database");
             optionsBuilder.UseInMemoryDatabase("CrudApiDb");
         }
 

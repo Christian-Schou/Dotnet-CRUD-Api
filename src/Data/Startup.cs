@@ -1,5 +1,6 @@
 ﻿using Data.Database;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Data
 {
@@ -15,6 +16,7 @@ namespace Data
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
             // Add Database Context for the application
+            Log.Information("Adding Database Context to application");
             services.AddDbContext<ApplicationDbContext>();
             return services;
         }
