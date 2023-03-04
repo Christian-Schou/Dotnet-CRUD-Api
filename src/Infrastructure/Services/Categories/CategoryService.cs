@@ -28,7 +28,7 @@ namespace Infrastructure.Services.Categories
         /// <param name="category">Category to create in the database</param>
         /// <returns>The category that has been created in the database</returns>
         /// <exception cref="CustomException">Throws if the category has already been added</exception>
-        public async Task<Category> CreateCategoryAsync(Category category)
+        public async Task<Category> CreateCategoryAsync(Category category, CancellationToken ct)
         {
             // Make sure that we do not have any categories in the database with the same name
             if (await _db.Categories.AnyAsync(x => x.Name == category.Name))
@@ -36,7 +36,7 @@ namespace Infrastructure.Services.Categories
 
             // Add and save the category in the database
             _db.Categories.Add(category);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(ct);
             return category;
         }
 
@@ -48,11 +48,11 @@ namespace Infrastructure.Services.Categories
         /// Async method that enumerates the Categories asynchronously and returns them as an IEnumerable.
         /// </summary>
         /// <returns>List of categories from database</returns>
-        public async Task<IEnumerable<Category>> GetCategoriesAsync()
+        public async Task<List<Category>> GetCategoriesAsync(CancellationToken ct)
         {
             List<Category> categories = await _db.Categories
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(cancellationToken: ct);
 
             if (categories.Count() == 0)
             {
@@ -67,9 +67,9 @@ namespace Infrastructure.Services.Categories
         /// </summary>
         /// <param name="id">Category ID</param>
         /// <returns>A category</returns>
-        public async Task<Category> GetCategoryByIdAsync(Guid id)
+        public async Task<Category> GetCategoryByIdAsync(Guid id, CancellationToken ct)
         {
-            return await getCategoryByIdAsync(id);
+            return await getCategoryByIdAsync(id, ct);
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace Infrastructure.Services.Categories
         /// </summary>
         /// <param name="name">Category Name</param>
         /// <returns>A category</returns>
-        public async Task<Category> GetCategoryByNameAsync(string name)
+        public async Task<Category> GetCategoryByNameAsync(string name, CancellationToken ct)
         {
-            return await getCategoryByNameAsync(name);
+            return await getCategoryByNameAsync(name, ct);
         }
 
         #endregion Read (R)
@@ -95,10 +95,10 @@ namespace Infrastructure.Services.Categories
         /// <param name="categoryToUpdate">The category we would like to update</param>
         /// <returns>The updated category</returns>
         /// <exception cref="CustomException">Thrown if a category in the database with the same name already exists</exception>
-        public async Task<Category> UpdateCategoryAsync(Category categoryToUpdate)
+        public async Task<Category> UpdateCategoryAsync(Category categoryToUpdate, CancellationToken ct)
         {
             // Make sure that the category exist in the database
-            Category category = await getCategoryByIdAsync(categoryToUpdate.Id);
+            Category category = await getCategoryByIdAsync(categoryToUpdate.Id, ct);
 
             // Validation before updating the category
             // We don't want any categories in the database with the same name
@@ -109,7 +109,7 @@ namespace Infrastructure.Services.Categories
 
             // No problems, let's update the category
             _db.Categories.Update(categoryToUpdate);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken: ct);
             return categoryToUpdate;
         }
 
@@ -122,11 +122,11 @@ namespace Infrastructure.Services.Categories
         ///  IF the category exists it will be removed and the database will be updated.
         /// </summary>
         /// <param name="id">ID of the category to delete</param>
-        public async Task DeleteCategoryAsync(Guid id)
+        public async Task DeleteCategoryAsync(Guid id, CancellationToken ct)
         {
-            Category category = await getCategoryByIdAsync(id);
+            Category category = await getCategoryByIdAsync(id, ct);
             _db.Categories.Remove(category);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken: ct);
         }
 
         #endregion Delete (D)
@@ -139,9 +139,9 @@ namespace Infrastructure.Services.Categories
         /// <param name="id">ID for category</param>
         /// <returns>The category matching the ID provided for the request.</returns>
         /// <exception cref="KeyNotFoundException">Thrown if the category wasn't found in the database</exception>
-        private async Task<Category> getCategoryByIdAsync(Guid id)
+        private async Task<Category> getCategoryByIdAsync(Guid id, CancellationToken ct)
         {
-            Category category = await _db.Categories.FindAsync(id);
+            Category category = await _db.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct);
             if (category == null) throw new KeyNotFoundException("The category was not found in the database.");
             return category;
         }
@@ -152,9 +152,9 @@ namespace Infrastructure.Services.Categories
         /// <param name="name">Name of the category</param>
         /// <returns>The category matching the name provided for the request.</returns>
         /// <exception cref="KeyNotFoundException">Thrown if the category wasn't found in the database</exception>
-        private async Task<Category> getCategoryByNameAsync(string name)
+        private async Task<Category> getCategoryByNameAsync(string name, CancellationToken ct)
         {
-            Category category = await _db.Categories.FindAsync(name);
+            Category category = await _db.Categories.FirstOrDefaultAsync(x => x.Name == name, cancellationToken: ct);
             if (category == null) throw new KeyNotFoundException("The category was not found in the database.");
             return category;
         }

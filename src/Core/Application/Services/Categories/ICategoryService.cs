@@ -11,7 +11,7 @@ namespace Application.Services.Categories
         /// </summary>
         /// <param name="id">Category ID</param>
         /// <returns>A Single category</returns>
-        Task<Category> GetCategoryByIdAsync(Guid id);
+        Task<Category> GetCategoryByIdAsync(Guid id, CancellationToken ct);
 
         /// <summary>
         /// Get a single category by the name of the category.
@@ -19,14 +19,14 @@ namespace Application.Services.Categories
         /// </summary>
         /// <param name="name">Category name</param>
         /// <returns>A Single category</returns>
-        Task<Category> GetCategoryByNameAsync(string name);
+        Task<Category> GetCategoryByNameAsync(string name, CancellationToken ct);
 
         /// <summary>
         /// Get all categories in the database (if any).<br />
         /// If no categories exist in the database, an exception will be thrown and a status code of 404 will be returned.
         /// </summary>
         /// <returns>A list of categories to enumerate</returns>
-        Task<IEnumerable<Category>> GetCategoriesAsync();
+        Task<List<Category>> GetCategoriesAsync(CancellationToken ct);
 
         /// <summary>
         /// Add a new category to the database.<br />
@@ -35,7 +35,7 @@ namespace Application.Services.Categories
         /// </summary>
         /// <param name="category">Category to add in database</param>
         /// <returns>The category that has been added in the database</returns>
-        Task<Category> CreateCategoryAsync(Category category);
+        Task<Category> CreateCategoryAsync(Category category, CancellationToken ct);
 
         /// <summary>
         /// Update a category in the database.<br />
@@ -45,7 +45,7 @@ namespace Application.Services.Categories
         /// </summary>
         /// <param name="category">Category to update</param>
         /// <returns>The updated category in the database</returns>
-        Task<Category> UpdateCategoryAsync(Category category);
+        Task<Category> UpdateCategoryAsync(Category category, CancellationToken ct);
 
         /// <summary>
         /// Delete a specific category by the ID of the category.<br />
@@ -53,6 +53,6 @@ namespace Application.Services.Categories
         /// </summary>
         /// <param name="id">Category ID</param>
         /// <returns></returns>
-        Task DeleteCategoryAsync(Guid id);
+        Task DeleteCategoryAsync(Guid id, CancellationToken ct);
     }
 }
