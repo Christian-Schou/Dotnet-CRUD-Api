@@ -10,7 +10,7 @@ namespace Domain.Entitites.Products
         public int Stock { get; set; } = 0;
 
         // Relationship
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public Category Category { get; set; }
     }
 }
