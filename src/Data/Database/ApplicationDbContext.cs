@@ -18,7 +18,6 @@ namespace Data.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Log.Information("Using In Memory Database");
             optionsBuilder.UseInMemoryDatabase("CrudApiDb");
         }
 

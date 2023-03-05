@@ -16,14 +16,14 @@ namespace Application.Services.Products
         /// Get a list of products. This will return all products in the database.
         /// </summary>
         /// <returns>A list of all products in the database.</returns>
-        Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct);
+        Task<List<Product>> GetProductsAsync(CancellationToken ct);
 
         /// <summary>
         /// Get a list of products that belong to a specific category.
         /// </summary>
         /// <param name="categoryId">Category ID to get products for</param>
         /// <returns>List of products that belongs to a specific category</returns>
-        Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(Guid categoryId, CancellationToken ct);
+        Task<List<Product>> GetProductsByCategoryIdAsync(Guid categoryId, CancellationToken ct);
 
         /// <summary>
         /// Create a new product in the database. If a product with the same name already exist, it will throw an exception.<br />

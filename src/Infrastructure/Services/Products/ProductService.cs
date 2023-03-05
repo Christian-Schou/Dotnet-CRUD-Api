@@ -82,7 +82,7 @@ namespace Infrastructure.Services.Products
         /// </summary>
         /// <returns>A list of products from the database</returns>
         /// <exception cref="KeyNotFoundException">Thrown if no products are available in the database</exception>
-        public async Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct)
+        public async Task<List<Product>> GetProductsAsync(CancellationToken ct)
         {
             // Get the products from the database
             List<Product> products = await _db.Products
@@ -109,7 +109,7 @@ namespace Infrastructure.Services.Products
         /// <param name="categoryId">The category to get the products for</param>
         /// <returns>A list of products within a specific category</returns>
         /// <exception cref="KeyNotFoundException">Thrown if no products are available within that specific category</exception>
-        public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(Guid categoryId, CancellationToken ct)
+        public async Task<List<Product>> GetProductsByCategoryIdAsync(Guid categoryId, CancellationToken ct)
         {
             // Make sure that the category exists before requesting products
             Category category = await _categories.GetCategoryByIdAsync(categoryId, ct);
