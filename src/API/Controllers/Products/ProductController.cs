@@ -44,7 +44,22 @@ namespace API.Controllers.Products
             // Map product to DTO
             ProductResponseDto mappedProduct = _mapper.Map<ProductResponseDto>(product);
 
+            // Return mapped product
             return Ok(mappedProduct);
+        }
+
+        // GET: api/Product/get/category/{id}
+        [HttpGet("get/category/{id}")]
+        public async Task<IActionResult> GetProductByCategoryAsync(Guid id, CancellationToken ct)
+        {
+            // Get all products within a specific category
+            List<Product> products = await _mediator.Send(new GetProductsByCategoryQuery(id), ct);
+
+            // Map the products into a list
+            List<ProductResponseDto> mappedProductsInCategory = _mapper.Map<List<ProductResponseDto>>(products);
+
+            // Return the mapped products
+            return Ok(mappedProductsInCategory);
         }
 
         // POST: api/Product/add
