@@ -32,18 +32,18 @@ namespace Infrastructure.Services.Products
         /// <param name="product">Product for creation in database</param>
         /// <returns>The created product in the database</returns>
         /// <exception cref="CustomException">Thrown if a product already exist in the database with the same name</exception>
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<Product> CreateProductAsync(Product product, CancellationToken ct)
         {
             // Make sure that we do not have any products in the database with the same name
             if (await _db.Products.AnyAsync(x => x.Name == product.Name))
                 throw new CustomException($"A product with the name {product.Name} already exists.");
 
             // Make sure that the category exist, before adding the product to the database
-            await _categories.GetCategoryByIdAsync(product.CategoryId);
+            await _categories.GetCategoryByIdAsync(product.CategoryId, ct);
 
             // Everything looks good - Add the new product to the database
             _db.Products.Add(product);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(ct);
             return product;
         }
 
@@ -57,10 +57,10 @@ namespace Infrastructure.Services.Products
         /// </summary>
         /// <param name="productId">ID of the product to find in the database</param>
         /// <returns>A single product matching the provided ID in the request</returns>
-        public async Task<Product> GetProductByIdAsync(Guid productId)
+        public async Task<Product> GetProductByIdAsync(Guid productId, CancellationToken ct)
         {
             // Request helper method to get the product
-            return await getProductByIdAsync(productId);
+            return await getProductByIdAsync(productId, ct);
         }
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace Infrastructure.Services.Products
         /// </summary>
         /// <param name="name">Name of the product</param>
         /// <returns>A single product matching the name specified for the request</returns>
-        public async Task<Product> GetProductByNameAsync(string name)
+        public async Task<Product> GetProductByNameAsync(string name, CancellationToken ct)
         {
             // Request helper method to get the product
-            return await getProductByNameAsync(name);
+            return await getProductByNameAsync(name, ct);
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace Infrastructure.Services.Products
         /// </summary>
         /// <returns>A list of products from the database</returns>
         /// <exception cref="KeyNotFoundException">Thrown if no products are available in the database</exception>
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct)
         {
             // Get the products from the database
             List<Product> products = await _db.Products
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(ct);
 
             // Check that we actually got some products from the database
             if (products.Count() == 0)
@@ -109,16 +109,16 @@ namespace Infrastructure.Services.Products
         /// <param name="categoryId">The category to get the products for</param>
         /// <returns>A list of products within a specific category</returns>
         /// <exception cref="KeyNotFoundException">Thrown if no products are available within that specific category</exception>
-        public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(Guid categoryId)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(Guid categoryId, CancellationToken ct)
         {
             // Make sure that the category exists before requesting products
-            Category category = await _categories.GetCategoryByIdAsync(categoryId);
+            Category category = await _categories.GetCategoryByIdAsync(categoryId, ct);
 
             // Get all products that has the specific category id applied
             List<Product> products = await _db.Products
                 .AsNoTracking()
                 .Where(x => x.CategoryId == categoryId)
-                .ToListAsync();
+                .ToListAsync(ct);
 
             // Make sure we got some products
             if (products.Count() == 0)
@@ -143,10 +143,10 @@ namespace Infrastructure.Services.Products
         /// <param name="productToUpdate">The product we would like to update</param>
         /// <returns>The updated product</returns>
         /// <exception cref="CustomException">Thrown if a product in the database with the same name already exists</exception>
-        public async Task<Product> UpdateProductAsync(Product productToUpdate)
+        public async Task<Product> UpdateProductAsync(Product productToUpdate, CancellationToken ct)
         {
             // Make sure that the product actually exist in the database
-            Product product = await getProductByIdAsync(productToUpdate.Id);
+            Product product = await getProductByIdAsync(productToUpdate.Id, ct);
 
             // Validation before we update the product
             // We do not want any product in the database with the same names
@@ -157,7 +157,7 @@ namespace Infrastructure.Services.Products
 
             // Validation has no problems, let's continue
             _db.Products.Update(productToUpdate);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(ct);
             return productToUpdate;
         }
 
@@ -170,11 +170,11 @@ namespace Infrastructure.Services.Products
         ///  If the product exist it will be removed and the database will be updated.
         /// </summary>
         /// <param name="productId">ID of the product to delete</param>
-        public async Task DeleteProductAsync(Guid productId)
+        public async Task DeleteProductAsync(Guid productId, CancellationToken ct)
         {
-            Product product = await getProductByIdAsync(productId);
+            Product product = await getProductByIdAsync(productId, ct);
             _db.Products.Remove(product);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(ct);
         }
 
         #endregion Delete (D)
@@ -188,9 +188,9 @@ namespace Infrastructure.Services.Products
         /// <param name="id">ID of the product to find in the database</param>
         /// <returns>Requested product</returns>
         /// <exception cref="KeyNotFoundException">Thrown if no product in the database has the given ID</exception>
-        private async Task<Product> getProductByIdAsync(Guid id)
+        private async Task<Product> getProductByIdAsync(Guid id, CancellationToken ct)
         {
-            Product product = await _db.Products.FindAsync(id);
+            Product product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id, ct);
             if (product == null) throw new KeyNotFoundException($"The product with ID: {id} was not found in the database.");
             return product;
         }
@@ -202,9 +202,9 @@ namespace Infrastructure.Services.Products
         /// <param name="name">Name of the product to find in database</param>
         /// <returns>Requested product</returns>
         /// <exception cref="KeyNotFoundException">Thrown if the product wasn't found in the database</exception>
-        private async Task<Product> getProductByNameAsync(string name)
+        private async Task<Product> getProductByNameAsync(string name, CancellationToken ct)
         {
-            Product product = await _db.Products.FindAsync(name);
+            Product product = await _db.Products.FirstOrDefaultAsync(x => x.Name == name, ct);
             if (product == null) throw new KeyNotFoundException($"The product with name: {name} was not found in the database.");
             return product;
         }

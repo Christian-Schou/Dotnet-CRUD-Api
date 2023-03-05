@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Common;
 using Serilog;
 using System.Text.Json.Serialization;
+using MediatR;
 
 StaticLogger.EnsureLoggerIsInitialized();
 Log.Information("Starting Web API...");
@@ -21,6 +22,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

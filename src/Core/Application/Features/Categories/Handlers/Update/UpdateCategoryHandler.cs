@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Features.Categories.Handlers.Update
 {
-    public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Category>;
+    public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Category>
     {
         private readonly ICategoryService _categories;
 
