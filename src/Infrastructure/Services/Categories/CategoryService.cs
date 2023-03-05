@@ -119,11 +119,18 @@ namespace Infrastructure.Services.Categories
 
         /// <summary>
         ///  This method will request the helper method to make sure that the category exists in the database<br />
-        ///  IF the category exists it will be removed and the database will be updated.
+        ///  If the category exists it will be removed and the database will be updated.
         /// </summary>
         /// <param name="id">ID of the category to delete</param>
         public async Task DeleteCategoryAsync(Guid id, CancellationToken ct)
         {
+            // Make sure no products are connected to the category
+            if (await _db.Products.AnyAsync(x => x.CategoryId == id))
+            { 
+                throw new CustomException("There are products connected to this category. Please remove the products from the category and try again.");
+            }
+
+            // No products connected. Continue removing the category from the database
             Category category = await getCategoryByIdAsync(id, ct);
             _db.Categories.Remove(category);
             await _db.SaveChangesAsync(cancellationToken: ct);
