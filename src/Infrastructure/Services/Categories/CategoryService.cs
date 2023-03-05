@@ -31,7 +31,7 @@ namespace Infrastructure.Services.Categories
         public async Task<Category> CreateCategoryAsync(Category category, CancellationToken ct)
         {
             // Make sure that we do not have any categories in the database with the same name
-            if (await _db.Categories.AnyAsync(x => x.Name == category.Name))
+            if (await _db.Categories.AsNoTracking().AnyAsync(x => x.Name == category.Name))
                 throw new CustomException($"A category with the name {category.Name} already exists.");
 
             // Add and save the category in the database
@@ -141,7 +141,7 @@ namespace Infrastructure.Services.Categories
         /// <exception cref="KeyNotFoundException">Thrown if the category wasn't found in the database</exception>
         private async Task<Category> getCategoryByIdAsync(Guid id, CancellationToken ct)
         {
-            Category category = await _db.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct);
+            Category category = await _db.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct);
             if (category == null) throw new KeyNotFoundException("The category was not found in the database.");
             return category;
         }
@@ -154,7 +154,7 @@ namespace Infrastructure.Services.Categories
         /// <exception cref="KeyNotFoundException">Thrown if the category wasn't found in the database</exception>
         private async Task<Category> getCategoryByNameAsync(string name, CancellationToken ct)
         {
-            Category category = await _db.Categories.FirstOrDefaultAsync(x => x.Name == name, cancellationToken: ct);
+            Category category = await _db.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken: ct);
             if (category == null) throw new KeyNotFoundException("The category was not found in the database.");
             return category;
         }

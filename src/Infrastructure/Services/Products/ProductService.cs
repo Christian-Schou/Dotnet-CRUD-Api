@@ -35,7 +35,7 @@ namespace Infrastructure.Services.Products
         public async Task<Product> CreateProductAsync(Product product, CancellationToken ct)
         {
             // Make sure that we do not have any products in the database with the same name
-            if (await _db.Products.AnyAsync(x => x.Name == product.Name))
+            if (await _db.Products.AsNoTracking().AnyAsync(x => x.Name == product.Name))
                 throw new CustomException($"A product with the name {product.Name} already exists.");
 
             // Make sure that the category exist, before adding the product to the database
@@ -190,7 +190,7 @@ namespace Infrastructure.Services.Products
         /// <exception cref="KeyNotFoundException">Thrown if no product in the database has the given ID</exception>
         private async Task<Product> getProductByIdAsync(Guid id, CancellationToken ct)
         {
-            Product product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id, ct);
+            Product product = await _db.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, ct);
             if (product == null) throw new KeyNotFoundException($"The product with ID: {id} was not found in the database.");
             return product;
         }
@@ -204,7 +204,7 @@ namespace Infrastructure.Services.Products
         /// <exception cref="KeyNotFoundException">Thrown if the product wasn't found in the database</exception>
         private async Task<Product> getProductByNameAsync(string name, CancellationToken ct)
         {
-            Product product = await _db.Products.FirstOrDefaultAsync(x => x.Name == name, ct);
+            Product product = await _db.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, ct);
             if (product == null) throw new KeyNotFoundException($"The product with name: {name} was not found in the database.");
             return product;
         }
