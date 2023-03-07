@@ -37,10 +37,10 @@ To clone and run this simple .NET Web API, you'll need [Git](https://git-scm.com
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/Tech-With-Christian/Dotnet-Demo-CRUD-Api.git
+$ git clone https://github.com/Tech-With-Christian/Dotnet-CRUD-Api.git
 
 # Go into the repository
-$ cd dotnet-demo-crud-api
+$ cd dotnet-crud-api
 
 # Restore dependencies
 $ dotnet restore
@@ -51,7 +51,7 @@ $ dotnet watch
 
 ## Download
 
-You can [download](https://github.com/Tech-With-Christian/Dotnet-Demo-CRUD-Api/archive/refs/heads/main.zip) the latest main version of this .NET CRUD API Demo for further development on Windows, macOS and Linux.
+You can [download](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/archive/refs/heads/main.zip) the latest main version of this .NET CRUD API Demo for further development on Windows, macOS and Linux.
 
 ## Credits
 
