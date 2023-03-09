@@ -61,15 +61,10 @@ You can [download](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/archiv
 
 This software uses the following open source packages:
 
-- [highlight.js](https://highlightjs.org/)
-
-## Support
-
-Buy me a Coffee
-
-<p>Or</p> 
-
-GitHub Sponsors
+- [AutoMapper](https://github.com/AutoMapper/AutoMapper)
+- [.NET Core](https://github.com/dotnet/core)
+- [MediatR](https://github.com/jbogard/MediatR)
+- [Swagger](https://github.com/swagger-api)
 
 ## License
 
