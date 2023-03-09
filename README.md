@@ -8,6 +8,8 @@
 
 <h4 align="center">This is a simple CRUD API for use in my <a href="https://blog.christian-schou.dk" target="_blank">tutorials</a>. It contains a simple implementation of a CRUD service for products, that can easily be extended.</h4>
 
+[![Build and test API](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml)
+
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
