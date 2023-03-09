@@ -4,7 +4,6 @@
   <br>
   .NET CRUD API
   <br>
-  [![Build and test API](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml)
 </h1>
 
 <h4 align="center">This is a simple CRUD API for use in my <a href="https://blog.christian-schou.dk" target="_blank">tutorials</a>. It contains a simple implementation of a CRUD service for products, that can easily be extended.</h4>
