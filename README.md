@@ -4,11 +4,15 @@
   <br>
   .NET CRUD API
   <br>
+  [![Build and test API](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml)
 </h1>
 
 <h4 align="center">This is a simple CRUD API for use in my <a href="https://blog.christian-schou.dk" target="_blank">tutorials</a>. It contains a simple implementation of a CRUD service for products, that can easily be extended.</h4>
 
-[![Build and test API](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/actions/workflows/dotnet.yml)
+
+<p align="center">
+<a href="https://christian-schou.dk"><img src="https://github.com/Tech-With-Christian/Dotnet-CRUD-Api/blob/main/assets/img/dotnet-crud-api.png" alt="Featured Image .NET CRUD API" width="90%"></a>
+</p>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -18,7 +22,6 @@
   <a href="#license">License</a>
 </p>
 
-<!--![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)-->
 
 ## Key Features
 
