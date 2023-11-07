@@ -22,7 +22,7 @@ namespace API.Mappings.Products
                     {
                         // Let's ignore both null and empty string properties on product
                         if (property == null) return false;
-                        if (property.GetType() == typeof(string) && string.IsNullOrEmpty((string)property)) return false;
+                        if (property.GetType() is typeof(string) && string.IsNullOrEmpty((string)property)) return false;
 
                         return true;
                     }));
